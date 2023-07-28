@@ -9,10 +9,12 @@ const SAMPLE_TEXT = 'Hidden Text';
 export class FontMetrics {
     private readonly _data: {[key: string]: FontMetric};
     private readonly _document: Document;
+    private readonly _baselineMultiplier: number;
 
-    constructor(document: Document) {
+    constructor(document: Document, baselineMultiplier: number) {
         this._data = {};
         this._document = document;
+        this._baselineMultiplier = baselineMultiplier;
     }
 
     private parseMetrics(fontFamily: string, fontSize: string): FontMetric {
@@ -47,7 +49,7 @@ export class FontMetrics {
         span.appendChild(this._document.createTextNode(SAMPLE_TEXT));
         container.appendChild(span);
         container.appendChild(img);
-        const baseline = img.offsetTop - span.offsetTop + 2;
+        const baseline = (img.offsetTop - span.offsetTop + 2) * this._baselineMultiplier;
 
         container.removeChild(span);
         container.appendChild(this._document.createTextNode(SAMPLE_TEXT));

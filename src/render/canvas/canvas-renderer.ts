@@ -56,6 +56,7 @@ export interface RenderOptions {
     y: number;
     width: number;
     height: number;
+    baselineMultiplier: number;
 }
 
 const MASK_OFFSET = 10000;
@@ -76,7 +77,7 @@ export class CanvasRenderer extends Renderer {
             this.canvas.style.width = `${options.width}px`;
             this.canvas.style.height = `${options.height}px`;
         }
-        this.fontMetrics = new FontMetrics(document);
+        this.fontMetrics = new FontMetrics(document, options.baselineMultiplier);
         this.ctx.scale(this.options.scale, this.options.scale);
         this.ctx.translate(-options.x, -options.y);
         this.ctx.textBaseline = 'bottom';
@@ -329,7 +330,8 @@ export class CanvasRenderer extends Renderer {
                 x: 0,
                 y: 0,
                 width: container.width,
-                height: container.height
+                height: container.height,
+                baselineMultiplier: 1
             });
 
             const canvas = await iframeRenderer.render(container.tree);
